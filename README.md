@@ -16,14 +16,14 @@ See readme.md files in each folder.
 
 ### Features and Functionalities
 
-- **Basic Gameplay**: A top-down driving game where players control toy cars with simple, accessible driving physics. The camera follows the player for an immersive experience.
+- **Basic Gameplay**: A Hotline Miami inspired top-down driving game where players control cars with simple, accessible driving physics. The camera follows the player for an immersive experience.
 - **Multiple Tracks**: (If time permits) Tracks will be loaded from external files, allowing diverse game environments.
-- **Game Objects**: Interactive objects (oil spills, jams, boosts) will add variety and challenge by impacting gameplay dynamics.
+- **Game Objects**: Interactive objects (oil spills, jams, boosts, weapons) will add variety and challenge by impacting gameplay dynamics.
 
 ### Additional Gameplay Features
 
-- **Terrain Handling**: Different terrains (e.g., asphalt, ice, grass) will affect car behavior.
-- **Vehicle Variety**: Players can choose between various vehicle types like boats, hovercrafts, and helicopters.
+- **Terrain Handling**: Different terrains (e.g., asphalt, grass) will affect the car's speed and maneuverability.
+- **Vehicle Variety**: Players can choose between various vehicle featured in the Hotline Miami videogames, so mostly cars as well as a van and a bike.
 - **Sound Effects**: Sound elements such as engine noises, crashes, and environmental sounds will enhance immersion.
 - **Split-Screen Mode**: Allows two players to compete on the same screen.
 - **Ability System**: Optional weapons like missiles or traps can impact opponents or provide a speed boost.
@@ -31,7 +31,7 @@ See readme.md files in each folder.
 ### Usage and Mechanics
 
 - **Controls**: Players use a game controller or keyboard for car control. Each car's speed, ability usage, and response to terrain will vary.
-- **Objective**: Players race to the finish line on various tracks, avoiding obstacles and using boosts for speed advantages.
+- **Objective**: Players race to the finish line on various tracks, avoiding obstacles, crashing into other cars or using weapons to derail them and using boosts for speed advantages.
 
 ## 2. High-Level Structure of the Software
 
