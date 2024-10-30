@@ -4,10 +4,10 @@
 - Michael Chen
 - Petteri Suonpää
 - Hanjemma Jeong
-- Kevin Kabras
+- Kevin Cabras
 
 # Repository organization
-Your project implementation should follow the skelaton organization in this repository.
+Your project implementation should follow the skeleton organization in this repository.
 See readme.md files in each folder.
 
 # Project Implementation 
