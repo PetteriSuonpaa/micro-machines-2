@@ -14,7 +14,7 @@ In each meeting, you are required to discuss:
 1. Michael Chen
 2. Petteri Suonpää
 3. Hanjemma Jeong
-4. Kevin Kabras
+4. Kevin Cabras
 
 ## Summary of works
 1. **Michael Chen**
