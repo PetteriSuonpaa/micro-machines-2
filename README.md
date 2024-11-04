@@ -6,10 +6,6 @@
 - Hanjemma Jeong
 - Kevin Cabras
 
-# Repository organization
-Your project implementation should follow the skeleton organization in this repository.
-See readme.md files in each folder.
-
 # Project Implementation 
 
 ## 1. Scope of Work
@@ -56,6 +52,8 @@ See readme.md files in each folder.
 - **SoundManager**: Loads and plays sound effects.
 - **UIManager**: Manages user interface elements, split-screen logic, and score display.
 - **CameraController**: Controls the camera that follows the player, determining what the player sees on-screen.
+
+This flow captures the interactions and dynamic responses of a vehicle's movement in a top-down driving game.
 
 ![Figure 1: Flowchart of Vehicle Movement Decision Process](./Flow_chart.png)
 
@@ -113,34 +111,3 @@ See readme.md files in each folder.
 - **Progress Tracking**:
   - Weekly review meeting on Wednesdays.
   - Sprint-end meeting to review, gather feedback, and finalize the project.
-
-# Working practices
-Each project group is assigned an advisor from the project teaching personnel. 
-There will be a dedicated Teams channel for each project topic to facilitate discussion between 
-the groups in the same topic and the advisor. 
-
-**The group should meet weekly.** The weekly meeting does not need to be long if there are no special issues 
-to discuss, and can be taken remotely as voice/video chat on the group Teams channel (or Zoom or other similar tool), 
-preferably at a regular weekly time. In the meeting the group updates:
-
-- What each member has done during the week
-- Are there challenges or problems? Discuss the possible solutions
-- Plan for the next week for everyone
-- Deviations and changes to the project plan, if any
-- After the meetings, the meeting notes will be committed to the project repository in the `Meeting-notes.md` file. 
-    * The commits within the week should have some commit messages referring to the meeting notes so 
-      that the project advisor can follow the progress.  
-    * **The meeting notes should be in English.**
-
-> Everyone may not be able to participate to all meetings, but at least a couple of members should be present in each meeting. 
-> Regular absence from meetings will affect in individual evaluation.
-
-# Source code documentation
-It is strongly recommended to use Doxygen to document your source code.
-Please go over the *Project Guidelines* for details.
-
-# TODOs (Date)
-You can create a list of TODOs in this file.
-The recommended format is:
-- Complete class implementation **foo**. Assigned to \<Member 1\>
-- Test ...
