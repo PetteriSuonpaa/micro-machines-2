@@ -57,9 +57,7 @@ See readme.md files in each folder.
 - **UIManager**: Manages user interface elements, split-screen logic, and score display.
 - **CameraController**: Controls the camera that follows the player, determining what the player sees on-screen.
 
-Figure 1: Flowchart of Vehicle Movement Decision Process
-
-![Figure 1: Flowchart of Vehicle Movement Decision Process](./vehicle_movement_flowchart.png)
+![Figure 1: Flowchart of Vehicle Movement Decision Process](./Flow_chart.png)
 
 ## 3. External Libraries
 
