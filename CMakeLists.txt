@@ -12,7 +12,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 # Find Box2D library
 #find_package(box2d REQUIRED)
-#target_link_libraries(${EXECUTABLE_NAME} X11 Xrandr Xinerama Xcursor Xi)
+#target_link_libraries(${EXECUTABLE_NAME} box2d)
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
