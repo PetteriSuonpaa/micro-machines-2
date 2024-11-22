@@ -1,6 +1,6 @@
 #include "Car.hpp"
 
-// Initialize the target points (checkpoints) on the track
+// Initialize the target points (checkpoints for the bots) on the track
 int Car::points[Car::num][2] = {
     {300, 610},
     {1270, 430},
@@ -16,13 +16,13 @@ int Car::points[Car::num][2] = {
 // Constructor to initialize the car's position, speed, and angle
 Car::Car() : x(0), y(0), speed(2), angle(0), n(0) {}
 
-// Move the car based on its current angle and speed
+// Move the Player's car based on its current angle and speed
 void Car::move() {
     x += std::sin(angle) * speed;  // Update x position
     y -= std::cos(angle) * speed;  // Update y position
 }
 
-// Find the next target point and adjust the car's angle
+// Find the next target point and adjust the car's (bots) angle
 void Car::findTarget() {
     float tx = points[n][0];  // Target x position
     float ty = points[n][1];  // Target y position

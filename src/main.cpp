@@ -92,9 +92,10 @@ int main()
 
     car[0].speed = speed;
     car[0].angle = angle;
-    // update positions (move) and find the next position (findtarget)
+    // update positions (move) 
     for(int i=0;i<N;i++) car[i].move();
-    //for(int i=1;i<N;i++) car[i].findTarget();
+    // this is for the bots movement
+    for(int i=1;i<N;i++) car[i].findTarget();
 
     //collision
     for(int i=0;i<N;i++)
