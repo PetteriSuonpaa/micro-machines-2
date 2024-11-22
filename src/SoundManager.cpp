@@ -13,4 +13,10 @@ void SoundManager::playMusic(const std::string& filePath, float volume) {
 
     // Play the music
     music.play();
+  
+}
+void SoundManager::stopMusic() {
+    if (music.getStatus() == sf::Music::Playing) {
+        music.stop();  // Stop and rewind the music
+    }
 }

@@ -8,7 +8,7 @@ class SoundManager {
 public:
     // Function to play the soundtrack
     static void playMusic(const std::string& filePath, float volume = 30.f);
-
+    static void stopMusic();
 private:
     // Static sf::Music instance to manage music playback
     static sf::Music music;
