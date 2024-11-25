@@ -5,9 +5,9 @@ include_directories("src")
 # Set the name of the executable to be produced
 set(EXECUTABLE_NAME Niban)
 
-# Add all .cpp - files under src/ directory
-file(GLOB SOURCES src/*.cpp)
-add_executable(${EXECUTABLE_NAME} ${SOURCES})
+# Specify the executable and link SFML and X11 libraries
+add_executable(Niban src/main.cpp src/Car.cpp src/MainMenu.cpp 
+                src/SoundManager.cpp )
 set(CMAKE_BUILD_TYPE Debug)
 
 # Find Box2D library
