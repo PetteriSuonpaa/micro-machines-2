@@ -1,0 +1,48 @@
+# Meeting Notes
+In this file, you are required to take notes for your weekly meetings. 
+In each meeting, you are required to discuss:
+
+1. What each member has done during the week?
+2. Are there challenges or problems? Discuss the possible solutions
+3. Plan for the next week for everyone
+4. Deviations and changes to the project plan, if any
+
+
+# Meeting 06.11.2024 15:00
+
+**Participants**: 
+1. Michael Chen
+2. Petteri Suonpää
+3. Hanjemma Jeong
+4. Kevin Cabras
+
+## Summary of works
+1. **Michael Chen**
+   
+   Setting up workspace
+
+2. **Petteri Suonpää**
+
+   Setting up workspace
+
+3. **Hanjemma Jeong**
+
+   Setting up workspace
+
+4. **Kevin Kabras**
+
+   Setting up workspace
+
+
+## Challenges
+
+1. Understand how to deal with the numerous problems that arise when trying to clone a directory, creating a build file, implementing libraries (SFML and Box2D) and using cmake in the terminal to build them.
+
+2. Finding documentation and resources online to help us understand how to fix the multiple individual issues we were encountering.
+
+## Actions
+1. Try different commands in the terminal to fix or narrow down the issues.
+2. Find relevant and trustworthy resources online in order to help us understand what to do
+
+## Project status 
+Beginning/Blocked progression
