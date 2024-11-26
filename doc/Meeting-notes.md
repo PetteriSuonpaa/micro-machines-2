@@ -36,12 +36,11 @@ In each meeting, you are required to discuss:
 
 ## Challenges
 
-1. ...
-2. ...
+1. Understand how to use Git
 
 ## Actions
 1. Research on the topic
 2. Fetch the project and push the external libraries to the git
 
 ## Project status 
-Excellent
+Beginning
