@@ -20,6 +20,7 @@ private:
 public:
     MainMenu(float width, float height);
     void draw(RenderWindow& Window);
+    void drawBackground(RenderWindow& window);
     void MoveUp();
     void MoveDown();
 
