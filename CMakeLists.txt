@@ -1,13 +1,13 @@
 cmake_minimum_required (VERSION 2.6)
-project (Niban)
+project (MicroMachine)
 include_directories("src")
 
 # Set the name of the executable to be produced
-set(EXECUTABLE_NAME Niban)
+set(EXECUTABLE_NAME MicroMachine)
 
 # Specify the executable and link SFML and X11 libraries
-add_executable(Niban src/main.cpp src/Car.cpp src/MainMenu.cpp 
-                src/SoundManager.cpp src/Game.cpp )
+add_executable(MicroMachine src/main.cpp src/Car.cpp src/MainMenu.cpp 
+                src/SoundManager.cpp src/Game.cpp)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Find Box2D library
