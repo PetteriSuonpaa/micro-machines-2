@@ -24,6 +24,7 @@ int main() {
 
                     switch (selectedItem) {
                         case 0: { // Play
+                            menuWindow.close();
                             SoundManager::playMusic("sounds/Hotline Miami Soundtrack ~ Hydrogen [TubeRipper.cc].ogg");
                             Game game(1280, 720);
                             game.run();
