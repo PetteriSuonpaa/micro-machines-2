@@ -32,7 +32,8 @@ MainMenu::MainMenu(float width, float height)
     mainMenu[3].setCharacterSize(70);
     mainMenu[3].setPosition(500,500);
 
-    MainMenuSelected = -1;
+    MainMenuSelected = 0;
+    mainMenu[MainMenuSelected].setFillColor(purple);
 }
 MainMenu::~MainMenu() {
 }
@@ -47,18 +48,17 @@ void MainMenu::draw(RenderWindow& Window) {
 //MoveUp
 void MainMenu::MoveUp()
 {
-    if (MainMenuSelected -1 >=0) {
-        mainMenu[MainMenuSelected].setFillColor(Color::White);
+    mainMenu[MainMenuSelected].setFillColor(Color::White);
 
-        MainMenuSelected--;
-        if (MainMenuSelected == -1)
-        {
-            MainMenuSelected = 2;
-        }
-        
-        mainMenu[MainMenuSelected].setFillColor(purple);
+    MainMenuSelected--;
+    if (MainMenuSelected < 0)
+    {
+        MainMenuSelected = 3;
     }
+        
+    mainMenu[MainMenuSelected].setFillColor(purple);
 }
+
 //Move Down
 void MainMenu::MoveDown()
 {
