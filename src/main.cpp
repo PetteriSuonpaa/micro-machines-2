@@ -10,6 +10,7 @@ int main() {
     t3.loadFromFile("images/hotline_miami.png");
     t3.setSmooth(true);
     Sprite MenuBackground(t3);
+    SoundManager::playMusic("sounds/Michael Chen mainmenu song.ogg");
 
     while (menuWindow.isOpen()) {
         Event event;
@@ -21,6 +22,7 @@ int main() {
                 if (event.key.code == Keyboard::Down) mainMenu.MoveDown();
                 if (event.key.code == Keyboard::Return) {
                     int selectedItem = mainMenu.MainMenuPressed();
+                    SoundManager::stopMusic();
 
                     switch (selectedItem) {
                         case 0: { // Play
