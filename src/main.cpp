@@ -2,6 +2,8 @@
 #include <MainMenu.hpp>
 #include <SoundManager.hpp>
 #include "Game.hpp"
+#include "OptionsMenu.hpp"
+
 using namespace sf;
 int main() {
     RenderWindow menuWindow(VideoMode(1280, 720), "Main Menu");
@@ -10,7 +12,7 @@ int main() {
     t3.loadFromFile("images/hotline_miami.png");
     t3.setSmooth(true);
     Sprite MenuBackground(t3);
-    SoundManager::playMusic("sounds/Michael Chen mainmenu song.ogg");
+    SoundManager::playMusic("sounds/Michael Chen mainmenu song.ogg", SoundManager::getVolume());
 
     while (menuWindow.isOpen()) {
         Event event;
@@ -22,12 +24,11 @@ int main() {
                 if (event.key.code == Keyboard::Down) mainMenu.MoveDown();
                 if (event.key.code == Keyboard::Return) {
                     int selectedItem = mainMenu.MainMenuPressed();
-                    SoundManager::stopMusic();
 
                     switch (selectedItem) {
                         case 0: { // Play
                             menuWindow.close();
-                            SoundManager::playMusic("sounds/Hotline Miami Soundtrack ~ Hydrogen [TubeRipper.cc].ogg");
+                            SoundManager::playMusic("sounds/Hotline Miami Soundtrack ~ Hydrogen [TubeRipper.cc].ogg", SoundManager::getVolume());
                             Game game(1280, 720);
                             game.run();
                             SoundManager::stopMusic();
@@ -35,6 +36,11 @@ int main() {
                         }
                         case 1: { // Options
                             // Handle options
+                            menuWindow.close();
+                            OptionsMenu optionsMenu(1280, 720);
+                            optionsMenu.open(menuWindow);
+                            SoundManager::playMusic("sounds/Michael Chen mainmenu song.ogg", SoundManager::getVolume());
+                            //SoundManager::stopMusic();
                             break;
                         }
                         case 2: { // About
