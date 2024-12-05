@@ -1,22 +1,39 @@
 #include "SoundManager.hpp"
-#include <iostream>
 
-sf::Music SoundManager::music; // Static member initialization
+sf::Music SoundManager::music;
+sf::SoundBuffer SoundManager::soundBuffer;
+sf::Sound SoundManager::sound;
+int SoundManager::currentVolume = 30; // Default volume
 
-void SoundManager::playMusic(const std::string& filePath, float volume) {
-    // Load the music file
-    if (!music.openFromFile(filePath))
-        return ; // error
-
-    // Set the volume
-    music.setVolume(volume);
-
-    // Play the music
-    music.play();
-  
-}
-void SoundManager::stopMusic() {
-    if (music.getStatus() == sf::Music::Playing) {
-        music.stop();  // Stop and rewind the music
+void SoundManager::playMusic(const std::string& filename, int volume) {
+    if (!music.openFromFile(filename)) {
+        throw std::runtime_error("Failed to load music file");
     }
+    currentVolume = volume; // Update the global volume
+    music.setVolume(static_cast<float>(currentVolume));
+    music.setLoop(true);
+    music.play();
+}
+
+void SoundManager::stopMusic() {
+    music.stop();
+}
+
+void SoundManager::setVolume(int volume) {
+    currentVolume = volume;
+    music.setVolume(static_cast<float>(currentVolume));
+    sound.setVolume(static_cast<float>(currentVolume));
+}
+
+int SoundManager::getVolume() {
+    return currentVolume;
+}
+
+void SoundManager::playSound(const std::string& filename) {
+    if (!soundBuffer.loadFromFile(filename)) {
+        throw std::runtime_error("Failed to load sound file");
+    }
+    sound.setBuffer(soundBuffer);
+    sound.setVolume(static_cast<float>(currentVolume));
+    sound.play();
 }

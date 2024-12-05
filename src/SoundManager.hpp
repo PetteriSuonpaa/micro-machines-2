@@ -2,16 +2,21 @@
 #define SOUNDMANAGER_HPP
 
 #include <SFML/Audio.hpp>
-#include <string>
 
 class SoundManager {
 public:
-    // Function to play the soundtrack
-    static void playMusic(const std::string& filePath, float volume = 30.f);
+    static void playMusic(const std::string& filename, int volume = 30);
     static void stopMusic();
+    static void setVolume(int volume);
+    static int getVolume(); // New getter for current volume
+
+    static void playSound(const std::string& filename);
+
 private:
-    // Static sf::Music instance to manage music playback
     static sf::Music music;
+    static sf::SoundBuffer soundBuffer;
+    static sf::Sound sound;
+    static int currentVolume; // Store current volume globally
 };
 
-#endif 
+#endif

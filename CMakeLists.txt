@@ -7,7 +7,7 @@ set(EXECUTABLE_NAME MicroMachine)
 
 # Specify the executable and link SFML and X11 libraries
 add_executable(MicroMachine src/main.cpp src/Car.cpp src/MainMenu.cpp 
-                src/SoundManager.cpp src/Game.cpp)
+                src/SoundManager.cpp src/Game.cpp src/OptionsMenu.cpp)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Find Box2D library
