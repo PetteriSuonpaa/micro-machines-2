@@ -4,7 +4,7 @@ Game::Game(float windowWidth, float windowHeight)
     : gameWindow(sf::VideoMode(windowWidth, windowHeight), "Car Racing Game"),
       speed(0), angle(0), offsetX(0), offsetY(0),
       // Speed boost variables:
-      boostMultiplier(1.5f), boostDuration(3.0f), boostCooldown(5.0f),
+      boostMultiplier(2.0f), boostDuration(2.5), boostCooldown(5.0f),
       isBoosting(false), boostAvailable(true) {
     // Load textures
     bgTexture.loadFromFile("images/background.png");
