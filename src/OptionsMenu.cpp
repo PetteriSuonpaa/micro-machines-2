@@ -12,7 +12,7 @@ OptionsMenu::OptionsMenu(float width, float height) : volume(30) {
     instructionText.setCharacterSize(25);
     instructionText.setFillColor(sf::Color::Cyan);
     instructionText.setPosition(80, 300);
-    instructionText.setString("Use Left/Right to Adjust, Esc to Return");
+    instructionText.setString("Sound: Use Left/Right to Adjust, Esc to Return");
 
     // Set up volume bar background
     volumeBarBackground.setSize(sf::Vector2f(400, 20));  // Fixed width
