@@ -10,8 +10,12 @@ public:
     static void setVolume(int volume);
     static int getVolume(); // New getter for current volume
 
+    static void playSound(const std::string& filename);
+
 private:
     static sf::Music music;
+    static sf::SoundBuffer soundBuffer;
+    static sf::Sound sound;
     static int currentVolume; // Store current volume globally
 };
 

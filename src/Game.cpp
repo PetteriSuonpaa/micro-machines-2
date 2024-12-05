@@ -152,6 +152,8 @@ void Game::activateBoost() {
 
         boostClock.restart();
         cooldownClock.restart();
+
+        SoundManager::playSound("sounds/boost_sound.ogg");
     }
 }
 
