@@ -2,10 +2,14 @@
 
 Game::Game(float windowWidth, float windowHeight)
     : gameWindow(sf::VideoMode(windowWidth, windowHeight), "Car Racing Game"),
-      speed(0), angle(0), offsetX(0), offsetY(0) {
+      speed(0), angle(0), offsetX(0), offsetY(0),
+      // Speed boost variables:
+      boostMultiplier(1.5f), boostDuration(3.0f), boostCooldown(5.0f),
+      isBoosting(false), boostAvailable(true) {
     // Load textures
     bgTexture.loadFromFile("images/background.png");
     carTexture.loadFromFile("images/car.png");
+    iconTexture.loadFromFile("images/boost_icon.png");
 
     // Setup sprites
     sBackground.setTexture(bgTexture);
@@ -13,6 +17,14 @@ Game::Game(float windowWidth, float windowHeight)
     carTexture.setSmooth(true);
     sCar.setTexture(carTexture);
     sCar.setOrigin(R, R);
+    boostIcon.setTexture(iconTexture);
+    boostIcon.setPosition(10, 10);
+    boostIcon.setScale(0.2f, 0.2f);
+
+    // Setup boost slider
+    boostSlider.setSize(sf::Vector2f(100, 10));
+    boostSlider.setFillColor(sf::Color::Green);
+    boostSlider.setPosition(10, 125); // Below the icon
 
     // Initialize cars
     for (int i = 0; i < N; ++i) {
@@ -24,6 +36,8 @@ Game::Game(float windowWidth, float windowHeight)
     }
 
     gameWindow.setFramerateLimit(60);
+
+    boostClock.restart();
 }
 
 void Game::run() {
@@ -37,6 +51,7 @@ void Game::run() {
         }
 
         handleCarMovement();
+        updateBoostVisuals();
         checkCollisions();
         render();
     }
@@ -47,6 +62,19 @@ void Game::handleCarMovement() {
     bool Down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
     bool Left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
     bool Right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+    bool Boost = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+    // Handle speed boost
+    if (Boost && boostAvailable) {
+        activateBoost();
+    }
+
+    if (isBoosting && boostClock.getElapsedTime().asSeconds() >= boostDuration) {
+        deactivateBoost();
+    }
+
+    // Update speed with boost multiplier
+    float effectiveMaxSpeed = isBoosting ? maxSpeed * boostMultiplier : maxSpeed;
 
     // Update speed
     if (Up && speed < maxSpeed)
@@ -108,5 +136,61 @@ void Game::render() {
         gameWindow.draw(sCar);
     }
 
+    // Draw boost slider and icon
+    gameWindow.draw(boostSlider);
+    gameWindow.draw(boostIcon);
+
     gameWindow.display();
+}
+
+void Game::activateBoost() {
+    if (boostAvailable) {
+        isBoosting = true;
+        boostAvailable = false;
+
+        speed *= boostMultiplier;
+
+        boostClock.restart();
+        cooldownClock.restart();
+    }
+}
+
+void Game::deactivateBoost() {
+    if (isBoosting) {
+        // Scale the speed back down to normal limits
+        speed /= boostMultiplier;
+
+        // Ensure the speed stays within the normal max speed limits
+        if (speed > maxSpeed) speed = maxSpeed;
+        if (speed < -maxSpeed) speed = -maxSpeed;
+
+        isBoosting = false;
+    }
+}
+
+void Game::updateBoostVisuals() {
+    if (isBoosting) {
+        // Update the slider based on remaining boost duration
+        float remainingTime = boostDuration - boostClock.getElapsedTime().asSeconds();
+        if (remainingTime <= 0) {
+            deactivateBoost();
+        } else {
+            boostSlider.setSize(sf::Vector2f(remainingTime / boostDuration * 100, 10));
+        }
+    } else if (!boostAvailable) {
+        // Update slider for cooldown
+        float elapsedTime = cooldownClock.getElapsedTime().asSeconds();
+        if (elapsedTime >= boostCooldown) {
+            boostAvailable = true;
+        } else {
+            boostSlider.setSize(sf::Vector2f(elapsedTime / boostCooldown * 100, 10));
+        }
+        boostSlider.setFillColor(sf::Color::Red);
+    } else {
+        boostSlider.setFillColor(sf::Color::Green);
+        boostSlider.setSize(sf::Vector2f(100, 10));
+    }
+
+    // Update icon color based on availability
+    boostIcon.setColor(boostAvailable ? sf::Color::White : sf::Color(128, 128, 128));
 }
