@@ -2,6 +2,7 @@
 #define CAR_HPP
 
 #include <cmath>
+#include "mapBoudaries.hpp"
 
 class Car {
 public:

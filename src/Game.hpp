@@ -6,6 +6,7 @@
 #include <Car.hpp>
 #include <SoundManager.hpp>
 #include <vector>
+#include <cmath>
 
 class Game {
 private:

@@ -18,8 +18,17 @@ Car::Car() : x(0), y(0), speed(2), angle(0), n(0) {}
 
 // Move the Player's car based on its current angle and speed
 void Car::move() {
-    x += std::sin(angle) * speed;  // Update x position
-    y -= std::cos(angle) * speed;  // Update y position
+    // Calculate new position
+    float newX = x + std::sin(angle) * speed;
+    float newY = y - std::cos(angle) * speed;
+
+    // Apply boundaries to prevent moving outside the map
+    if (newX >= MAP_MIN_X && newX <= MAP_MAX_X) {
+        x = newX; // Update x position only if within bounds
+    }
+    if (newY >= MAP_MIN_Y && newY <= MAP_MAX_Y) {
+        y = newY; // Update y position only if within bounds
+    }
 }
 
 // Find the next target point and adjust the car's (bots) angle

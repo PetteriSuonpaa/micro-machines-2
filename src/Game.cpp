@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "mapBoudaries.hpp"
 
 Game::Game(float windowWidth, float windowHeight)
     : gameWindow(sf::VideoMode(windowWidth, windowHeight), "Car Racing Game"),
@@ -117,13 +118,15 @@ void Game::checkCollisions() {
 }
 
 void Game::render() {
+    // Adjust offsets to stay within map boundaries
+    if (cars[0].x > 320) 
+        offsetX = std::min(cars[0].x - 320.0f, static_cast<float>(MAP_MAX_X - gameWindow.getSize().x));
+    if (cars[0].y > 240) 
+        offsetY = std::min(cars[0].y - 240.0f, static_cast<float>(MAP_MAX_Y - gameWindow.getSize().y));
+
     gameWindow.clear(sf::Color::White);
 
-    // Adjust camera offset
-    if (cars[0].x > 320) offsetX = cars[0].x - 320;
-    if (cars[0].y > 240) offsetY = cars[0].y - 240;
-
-    // Draw background
+    // Set the background position with adjusted offset
     sBackground.setPosition(-offsetX, -offsetY);
     gameWindow.draw(sBackground);
 

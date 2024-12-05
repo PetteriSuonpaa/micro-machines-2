@@ -10,16 +10,6 @@ add_executable(MicroMachine src/main.cpp src/Car.cpp src/MainMenu.cpp
                 src/SoundManager.cpp src/Game.cpp src/OptionsMenu.cpp)
 set(CMAKE_BUILD_TYPE Debug)
 
-# Find Box2D library
-set(BOX2D_ROOT "${CMAKE_SOURCE_DIR}/libs/box2d")
-include_directories("${BOX2D_ROOT}/include")
-add_library(Box2D STATIC IMPORTED)
-set_target_properties(Box2D PROPERTIES
-    IMPORTED_LOCATION "${BOX2D_ROOT}/build/src/libbox2d.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${BOX2D_ROOT}/include"
-)
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE Box2D X11 Xrandr Xinerama Xcursor Xi)
-
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 #Find any version 2.X of SFML
