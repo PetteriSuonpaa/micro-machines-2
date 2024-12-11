@@ -7,7 +7,8 @@
 #include <SoundManager.hpp>
 #include <vector>
 #include <cmath>
-
+#include "mapBoudaries.hpp"
+#include <sstream>
 class Game {
 private:
     sf::RenderWindow gameWindow;
@@ -15,10 +16,16 @@ private:
     sf::Sprite sBackground, sCar, boostIcon;
     sf::RectangleShape boostSlider;
     std::vector<Car> cars;
-
+    sf::Text coordinatesText;  
+    sf::Font font; 
+    sf::Clock debugClock;
+    sf::Text outOfBoundText;
+    sf::Clock outOfBoundsClock;
+    
     float speed;
     float angle;
     int offsetX, offsetY;
+    bool isOutOfBounds; // Flag for out-of-bounds status
 
     static constexpr float maxSpeed = 12.0f;
     static constexpr float acc = 0.2f;
@@ -47,7 +54,9 @@ private:
 
 public:
     Game(float windowWidth, float windowHeight);
+    bool isOnTrack(float x, float y); // To check if the car is on track
     void run();
+
 };
 
 #endif // GAME_HPP

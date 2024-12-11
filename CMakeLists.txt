@@ -7,7 +7,7 @@ set(EXECUTABLE_NAME MicroMachine)
 
 # Specify the executable and link SFML and X11 libraries
 add_executable(MicroMachine src/main.cpp src/Car.cpp src/MainMenu.cpp 
-                src/SoundManager.cpp src/Game.cpp src/OptionsMenu.cpp src/PlayMenu.cpp)
+                src/SoundManager.cpp src/Game.cpp src/OptionsMenu.cpp src/PlayMenu.cpp src/mapBoudaries.cpp)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Detect and add SFML

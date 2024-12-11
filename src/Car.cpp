@@ -1,5 +1,5 @@
 #include "Car.hpp"
-
+#include <iostream>
 // Initialize the target points (checkpoints for the bots) on the track
 int Car::points[Car::num][2] = {
     {300, 610},
@@ -16,13 +16,22 @@ int Car::points[Car::num][2] = {
 // Constructor to initialize the car's position, speed, and angle
 Car::Car() : x(0), y(0), speed(2), angle(0), n(0) {}
 
-// Move the Player's car based on its current angle and speed
+// Move the Bot's car based on its current angle and speed
 void Car::move() {
     // Calculate new position
     float newX = x + std::sin(angle) * speed;
     float newY = y - std::cos(angle) * speed;
 
-    // Apply boundaries to prevent moving outside the map
+    x = newX; // Update x position only if within bounds
+
+    y = newY; // Update y position only if within bounds
+}
+void Car::moveWithBoundaries() {
+    // Calculate new position based on speed and angle
+    float newX = x + std::sin(angle) * speed;
+    float newY = y - std::cos(angle) * speed;
+
+    // Apply boundaries to prevent moving outside the map (for your car only)
     if (newX >= MAP_MIN_X && newX <= MAP_MAX_X) {
         x = newX; // Update x position only if within bounds
     }
