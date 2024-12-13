@@ -1,4 +1,4 @@
-1. **Overview**: the software is able to successfully operate like the original micromachine game including its movement dynamics, bots, oil spills, boost speed and boundaries. The software doesn’t provide splitscreen, a level editor and weapons.  
+1. **Overview**: the software is able to successfully operate like the original micromachine game including its movement dynamics, bots, oil spills, boost speed, two maps and boundaries. The software doesn’t provide splitscreen, a level editor and weapons.  
 2. **Software structure**:   
    This is what our structure is composed of (along with the SFML library):  
    ![Architecture image](./Architecture.png) 
