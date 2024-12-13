@@ -10,7 +10,7 @@ const int MAP_MIN_Y = 0;       // Minimum y boundary
 const int MAP_MAX_Y = 3620;    // Maximum y boundary
 
 extern std::vector<sf::FloatRect> trackBounds;
-
+extern std::vector<sf::FloatRect> oilSpillBounds;
 
 
 

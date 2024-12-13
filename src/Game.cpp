@@ -17,6 +17,13 @@ Game::Game(float windowWidth, float windowHeight)
         cout <<"No font is here";
 
     }
+    // Load the sound in the constructor
+    if (!oilSpillSoundBuffer.loadFromFile("sounds/113365__silversatyr__fall.ogg")) {
+        std::cout << "Error loading oil spill sound!" << std::endl;
+    } else {
+        oilSpillSound.setBuffer(oilSpillSoundBuffer);
+        oilSpillSound.setVolume(20); // Adjust volume 
+    }
     //out of Bounds text
     outOfBoundText.setFont(font);
     outOfBoundText.setString("Out of Bound!");
@@ -44,7 +51,7 @@ Game::Game(float windowWidth, float windowHeight)
         Car car;
         car.x = 300 + i * 50;
         car.y = 1700 + i * 80;
-        car.speed = 7 + i;
+        car.speed = 5 + i;
         cars.push_back(car);
     }
 
@@ -63,6 +70,7 @@ void Game::run() {
             }
         }
 
+        checkOilSpillCollision(cars[0].x, cars[0].y);  // Pass player's car position
         handleCarMovement();
         updateBoostVisuals();
         checkCollisions();
@@ -78,13 +86,30 @@ bool Game::isOnTrack(float x, float y) {
     }
     return false; // Car is off the track
 }
+void Game::checkOilSpillCollision(float x, float y) {
+    for (const auto& rect : oilSpillBounds) {
+        if (rect.contains(x, y)) {
+            std::cout << "Collision detected at: (" << x << ", " << y << ")" << std::endl;
+            oilSpillSound.play(); // This will play the oil spill sound
+            // Start the spinning effect if it's not already spinning
+            if (!isSpinning) {
+                isSpinning = true;
+                oilSpinClock.restart();  // Restart the clock when the collision happens
+                cars[0].speed *= 0.5f;  // Reduce speed to simulate slip
+            }
+
+            return; // Only process one spill at a time
+        }
+    }
+
+    std::cout << "No collision detected for position: (" << x << ", " << y << ")" << std::endl;
+}
 void Game::handleCarMovement() {
     bool Up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     bool Down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
     bool Left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
     bool Right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     bool Boost = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
     // Handle speed boost
     if (Boost && boostAvailable) {
         activateBoost();
@@ -100,7 +125,15 @@ void Game::handleCarMovement() {
     // Calculate new position based on speed and angle
     float newX = cars[0].x + cos(angle * 3.14159 / 180.0f) * speed;
     float newY = cars[0].y + sin(angle * 3.14159 / 180.0f) * speed;
-
+    if (isSpinning) {
+        // Check if 3 seconds have passed
+        if (oilSpinClock.getElapsedTime().asSeconds() >= 1.0f) {
+            isSpinning = false;  // Stop spinning after 3 seconds
+        } else {
+            // Apply continuous spinning during the 3 seconds
+            angle += 50;  // Adjust the speed of the spin
+        }
+    }
     // Check if the car will be within the track boundaries before updating its position
     if (isOnTrack(newX, newY)) {
         // Reset speed to maxSpeed when on track

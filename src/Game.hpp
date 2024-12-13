@@ -21,13 +21,14 @@ private:
     sf::Clock debugClock;
     sf::Text outOfBoundText;
     sf::Clock outOfBoundsClock;
-    
+
+
     float speed;
     float angle;
     int offsetX, offsetY;
     bool isOutOfBounds; // Flag for out-of-bounds status
 
-    static constexpr float maxSpeed = 12.0f;
+    static constexpr float maxSpeed = 8.0f;
     static constexpr float acc = 0.2f;
     static constexpr float deceleration = 0.3f;
     static constexpr float turnSpeed = 0.08f;
@@ -48,6 +49,12 @@ private:
     void render();
     void updateBoostVisuals();
 
+    bool isSpinning = false;      // Indicates if the car is spinning
+    sf::Clock oilSpinClock;  // Add this to keep track of spin duration
+    sf::SoundBuffer oilSpillSoundBuffer;
+    sf::Sound oilSpillSound;
+
+
     // Boost-related functions
     void activateBoost();
     void deactivateBoost();
@@ -55,6 +62,7 @@ private:
 public:
     Game(float windowWidth, float windowHeight);
     bool isOnTrack(float x, float y); // To check if the car is on track
+    void checkOilSpillCollision(float x, float y);
     void run();
 
 };
