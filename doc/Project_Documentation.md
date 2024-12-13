@@ -1,12 +1,12 @@
-1. **Overview**: the software is able to successfully operate like the original micromachine game including its movement dynamics, bots, win condition, SFX, boosts, different vehicles, different terrain handling and boundaries. The software doesn’t provide splitscreen, a level editor and weapons.  
+1. **Overview**: the software is able to successfully operate like the original micromachine game including its movement dynamics, bots, oil spills, boost speed and boundaries. The software doesn’t provide splitscreen, a level editor and weapons.  
 2. **Software structure**:   
    This is what our structure is composed of (along with the SFML library):  
-   ![Architecture picture](./Architecture.png)
+   ![Architecture image][./Architecture.png]  
    
 
 As for the relationships between the architecture, you can see it in this diagram:
 
-![Diagram picture](./Diagram.png)
+![Diagram image][./Diagram.png]
 
 3. **Instructions for building and using the software:**   
 - **Make sure you have SFML installed (but should be provided in the file already)**  
@@ -94,7 +94,9 @@ In order to win you need to make 3 laps around the racing course.
 
   **Responsibility:** Team
 
-	**Sprint 3 (20 hours):**
+	
+
+**Sprint 3 (20 hours):**
 
 - **Setting up the workspace environment:**
 
@@ -144,6 +146,7 @@ In order to win you need to make 3 laps around the racing course.
 
   **Responsibility:** Kevin
 
+
 - **Choose SFX and implementation:**
 
   **Status:** Ongoing
@@ -176,9 +179,6 @@ In order to win you need to make 3 laps around the racing course.
   **Status:** Success
 
   **Responsibility:** Petteri
-
-
-  
 
 - **Implement boost:**
 
