@@ -11,7 +11,7 @@ PlayMenu::PlayMenu(float width, float height)
     if (!mapTextures[0].loadFromFile("images/background.png")) {
         cout << "Failed to load background image for Map 1" << endl;
     }
-    if (!mapTextures[1].loadFromFile("images/micro-machines-2-turbo-tournament-driller-killer-game-gear-map.png")) {
+    if (!mapTextures[1].loadFromFile("images/micro_machines_2_turbo_tournament_driller_killer_game_gear_map.png")) {
         cout << "Failed to load background image for Map 2" << endl;
     }
 

@@ -47,14 +47,17 @@ int main() {
                                                 case 0: { // Map 1
                                                     playMenuWindow.close();
                                                     SoundManager::playMusic("sounds/Hotline Miami Soundtrack ~ Hydrogen [TubeRipper.cc].ogg", SoundManager::getVolume());
-                                                    Game game(1280, 720); // Start the game
+                                                    Game game(1280, 720,playMenu.mapTextures[0],1); // Start the game
                                                     game.run();
                                                     SoundManager::stopMusic();
                                                     break;
                                                 }
                                                 case 1: { // Map 2
-                                                    // Handle Map 2 selection (if needed in the future)
-                                                    cout << "Map 2 is not implemented yet." << endl;
+                                                    playMenuWindow.close();
+                                                    SoundManager::playMusic("sounds/Hotline Miami Soundtrack ~ Hydrogen [TubeRipper.cc].ogg", SoundManager::getVolume());
+                                                    Game game(1280, 720,playMenu.mapTextures[1],2); // Start the game
+                                                    game.run();
+                                                    SoundManager::stopMusic();
                                                     break;
                                                 }
                                             }

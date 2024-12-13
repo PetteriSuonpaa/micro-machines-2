@@ -2,16 +2,42 @@
 #include <iostream>
 using namespace std;
 using namespace sf;
-Game::Game(float windowWidth, float windowHeight)
+Game::Game(float windowWidth, float windowHeight, const sf::Texture& mapTexture, int mapNumber)
     : gameWindow(sf::VideoMode(windowWidth, windowHeight), "Car Racing Game"),
       speed(0), angle(0), offsetX(0), offsetY(0),
-      // Speed boost variables:
-      boostMultiplier(2.0f), boostDuration(2.5), boostCooldown(5.0f),
+      mapNumber(mapNumber),
+      mapTexture(mapTexture),
+      boostMultiplier(2.0f), boostDuration(2.5f), boostCooldown(5.0f),
       isBoosting(false), boostAvailable(true) {
-    // Load textures
-    bgTexture.loadFromFile("images/background.png");
-    carTexture.loadFromFile("images/car.png");
-    iconTexture.loadFromFile("images/boost_icon.png");
+    
+
+    // Define map boundaries based on mapNumber
+    if (mapNumber == 1) {
+        minX = MAP_MIN_X;
+        maxX = MAP_MAX_X;
+        minY = MAP_MIN_Y;
+        maxY = MAP_MAX_Y;
+    } else if (mapNumber == 2) {
+        minX = MAP_MIN_X2;
+        maxX = MAP_MAX_X2;
+        minY = MAP_MIN_Y2;
+        maxY = MAP_MAX_Y2;
+    } else {
+        std::cout << "Unknown map number!" << std::endl;
+        return;  // Or set default boundaries if needed
+    }
+
+    if (mapNumber == 1) {
+        // Initialize resources for Map 1
+        carTexture.loadFromFile("images/car.png");
+        iconTexture.loadFromFile("images/boost_icon.png");
+    } else if (mapNumber == 2) {
+        // Initialize resources for Map 2
+        carTexture.loadFromFile("images/car.png");
+        iconTexture.loadFromFile("images/boost_icon.png");
+    } else {
+        std::cout << "Unknown map number!" << std::endl;
+    }
 
     if (!font.loadFromFile("Fonts/Freedom-10eM.ttf")){
         cout <<"No font is here";
@@ -32,14 +58,29 @@ Game::Game(float windowWidth, float windowHeight)
     outOfBoundText.setPosition(400, 50); // Position on the screen
     outOfBoundText.setStyle(sf::Text::Bold);
     // Setup sprites
-    sBackground.setTexture(bgTexture);
-    sBackground.scale(2, 2);
-    carTexture.setSmooth(true);
-    sCar.setTexture(carTexture);
-    sCar.setOrigin(R, R);
-    boostIcon.setTexture(iconTexture);
-    boostIcon.setPosition(10, 10);
-    boostIcon.setScale(0.2f, 0.2f);
+    if (mapNumber == 1) {
+        // setupp textures for Map 1
+        sBackground.setTexture(mapTexture);
+        sBackground.scale(2, 2);
+        carTexture.setSmooth(true);
+        sCar.setTexture(carTexture);
+        sCar.setOrigin(R, R);
+        boostIcon.setTexture(iconTexture);
+        boostIcon.setPosition(10, 10);
+        boostIcon.setScale(0.2f, 0.2f);
+    } else if (mapNumber == 2) {
+        // Initialize resources for Map 2
+        sBackground2.setTexture(mapTexture);
+        sBackground2.scale(2, 2);
+        carTexture.setSmooth(true);
+        sCar.setTexture(carTexture);
+        sCar.setOrigin(R, R);
+        boostIcon.setTexture(iconTexture);
+        boostIcon.setPosition(10, 10);
+        boostIcon.setScale(0.2f, 0.2f);
+    } else {
+        std::cout << "Unknown map number!" << std::endl;
+    }
 
     // Setup boost slider
     boostSlider.setSize(sf::Vector2f(100, 10));
@@ -48,12 +89,23 @@ Game::Game(float windowWidth, float windowHeight)
 
     // Initialize cars
     for (int i = 0; i < N; ++i) {
-        Car car;
-        car.x = 300 + i * 50;
-        car.y = 1700 + i * 80;
-        car.speed = 5 + i;
-        cars.push_back(car);
+    // Create a new Car object
+    Car newCar(minX, maxX, minY, maxY);
+    if (mapNumber == 1) {
+        // Initialize the car's position and speed
+        newCar.x = 300 + i * 50;
+        newCar.y = 1700 + i * 80;
+        newCar.speed = 5 + i;
+    } else if (mapNumber == 2) {
+        // Initialize the car's position and speed
+        newCar.x = 400 + i * 50;
+        newCar.y = 1700 + i * 80;
+        newCar.speed = 5 + i;
     }
+
+    // Add the new car to the vector
+    cars.push_back(newCar);
+}
 
     gameWindow.setFramerateLimit(60);
 
@@ -79,12 +131,21 @@ void Game::run() {
 }
 // Function to check if the car is within the track's boundaries
 bool Game::isOnTrack(float x, float y) {
-    for (const auto& rect : trackBounds) {
-        if (rect.contains(x, y)) {
-            return true; // Car is on the track
+    if (mapNumber == 1) {
+        for (const auto& rect : trackBounds) {
+            if (rect.contains(x, y)) {
+                return true; // Car is on the track
+            }
         }
+        return false; // Car is off the track
+    } else if (mapNumber == 2) {
+        for (const auto& rect : trackBounds2) {
+            if (rect.contains(x, y)) {
+                return true; // Car is on the track
+            }
+        }
+        return false; // Car is off the track
     }
-    return false; // Car is off the track
 }
 void Game::checkOilSpillCollision(float x, float y) {
     for (const auto& rect : oilSpillBounds) {
@@ -189,11 +250,18 @@ void Game::handleCarMovement() {
 
     // Move the player's car with boundary checks
     cars[0].moveWithBoundaries();
-
-    // Update AI cars (move and follow their target)
-    for (size_t i = 1; i < cars.size(); ++i) {
-        cars[i].move();  // Move AI cars without boundary checks
-        cars[i].findTarget();  // Make AI cars follow their waypoints
+    
+    if (mapNumber == 1) {
+        // Update AI cars (move and follow their target)
+        for (size_t i = 1; i < cars.size(); ++i) {
+            cars[i].move();  // Move AI cars without boundary checks
+            cars[i].findTarget();  // Make AI cars follow their waypoints
+        }
+    } else if (mapNumber == 2) {
+        for (size_t i = 1; i < cars.size(); ++i) {
+            cars[i].move();  // Move AI cars without boundary checks
+            cars[i].findTarget2();  // Make AI cars follow their waypoints
+        }
     }
 }
 
@@ -219,16 +287,28 @@ void Game::checkCollisions() {
 
 void Game::render() {
     // Adjust offsets to stay within map boundaries
-    if (cars[0].x > 320) 
+    if (mapNumber == 1) {
+        if (cars[0].x > 320) 
         offsetX = std::min(cars[0].x - 320.0f, static_cast<float>(MAP_MAX_X - gameWindow.getSize().x));
-    if (cars[0].y > 240) 
+        if (cars[0].y > 240) 
         offsetY = std::min(cars[0].y - 240.0f, static_cast<float>(MAP_MAX_Y - gameWindow.getSize().y));
+    } else if (mapNumber == 2) {
+        if (cars[0].x > 320) 
+        offsetX = std::min(cars[0].x - 320.0f, static_cast<float>(MAP_MAX_X2 - gameWindow.getSize().x));
+        if (cars[0].y > 240) 
+        offsetY = std::min(cars[0].y - 240.0f, static_cast<float>(MAP_MAX_Y2 - gameWindow.getSize().y));
+    }
 
     gameWindow.clear(sf::Color::White);
 
     // Set the background position with adjusted offset
-    sBackground.setPosition(-offsetX, -offsetY);
-    gameWindow.draw(sBackground);
+    if (mapNumber == 1) {
+        sBackground.setPosition(-offsetX, -offsetY);
+        gameWindow.draw(sBackground);
+    } else if (mapNumber == 2) {
+        sBackground2.setPosition(-offsetX, -offsetY);
+        gameWindow.draw(sBackground2);
+    }
     
 
     // Draw cars

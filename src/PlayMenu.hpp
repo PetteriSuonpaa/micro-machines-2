@@ -13,11 +13,11 @@ private:
     int PlayMenuSelected;
     Font font;
     Text playMenu[Max_play_menu];
-    Texture mapTextures[Max_play_menu];
     Sprite mapPreview;
 
 public: 
     PlayMenu(float width, float height);
+    Texture mapTextures[Max_play_menu];
     void draw(RenderWindow& Window);
     void MoveUp();
     void MoveDown();

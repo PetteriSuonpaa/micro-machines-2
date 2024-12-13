@@ -21,13 +21,13 @@ private:
     sf::Clock debugClock;
     sf::Text outOfBoundText;
     sf::Clock outOfBoundsClock;
-
+    sf::Sprite sBackground2; // Sprite for the second map
 
     float speed;
     float angle;
     int offsetX, offsetY;
     bool isOutOfBounds; // Flag for out-of-bounds status
-
+    float minX, maxX, minY, maxY;  // Boundaries for the car's movement
     static constexpr float maxSpeed = 8.0f;
     static constexpr float acc = 0.2f;
     static constexpr float deceleration = 0.3f;
@@ -60,7 +60,9 @@ private:
     void deactivateBoost();
 
 public:
-    Game(float windowWidth, float windowHeight);
+    Game(float windowWidth, float windowHeight, const sf::Texture& mapTexture, int mapNumber);
+    int mapNumber;               // Add mapNumber
+    sf::Texture mapTexture;      // Add mapTexture
     bool isOnTrack(float x, float y); // To check if the car is on track
     void checkOilSpillCollision(float x, float y);
     void run();
