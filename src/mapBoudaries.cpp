@@ -18,7 +18,13 @@ std::vector<sf::FloatRect> trackBounds = {   //{x, y, width, height}
     {469, 3196, 1779, 244}, // 14 track region
     {214, 3145, 255, 295}, // 15 track region
 };
+std::vector<sf::FloatRect> trackBounds2 = {   //{x, y, width, height}
+    {416, 530, 152, 2170}, // Updated first track region
+    {416, 405, 2856, 170}, // Second track region
+    {3272, 405, 371, 370}, // third track region
+    {3455, 775, 371, 370}, // forth track region
 
+};
 
 std::vector<sf::FloatRect> oilSpillBounds = { // {x, y, width, height}
     {340, 1548, 36, 30},   // Oil spill 1
