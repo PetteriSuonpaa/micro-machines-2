@@ -2,6 +2,7 @@
 #define CAR_HPP
 
 #include <cmath>
+#include "mapBoudaries.hpp"
 
 class Car {
 public:
@@ -12,12 +13,12 @@ public:
     // Member variables
     float x, y, speed, angle;  // Car's position, speed, and direction
     int n; // Target point index
-
     // Constructor
     Car();
     
     // Member functions
     void move();
+    void moveWithBoundaries(); //for the player
     void findTarget();
 };
 

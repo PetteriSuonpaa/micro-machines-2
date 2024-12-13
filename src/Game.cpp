@@ -1,5 +1,7 @@
 #include "Game.hpp"
-
+#include <iostream>
+using namespace std;
+using namespace sf;
 Game::Game(float windowWidth, float windowHeight)
     : gameWindow(sf::VideoMode(windowWidth, windowHeight), "Car Racing Game"),
       speed(0), angle(0), offsetX(0), offsetY(0),
@@ -11,6 +13,24 @@ Game::Game(float windowWidth, float windowHeight)
     carTexture.loadFromFile("images/car.png");
     iconTexture.loadFromFile("images/boost_icon.png");
 
+    if (!font.loadFromFile("Fonts/Freedom-10eM.ttf")){
+        cout <<"No font is here";
+
+    }
+    // Load the sound in the constructor
+    if (!oilSpillSoundBuffer.loadFromFile("sounds/113365__silversatyr__fall.ogg")) {
+        std::cout << "Error loading oil spill sound!" << std::endl;
+    } else {
+        oilSpillSound.setBuffer(oilSpillSoundBuffer);
+        oilSpillSound.setVolume(20); // Adjust volume 
+    }
+    //out of Bounds text
+    outOfBoundText.setFont(font);
+    outOfBoundText.setString("Out of Bound!");
+    outOfBoundText.setCharacterSize(50);
+    outOfBoundText.setFillColor(sf::Color::Red);
+    outOfBoundText.setPosition(400, 50); // Position on the screen
+    outOfBoundText.setStyle(sf::Text::Bold);
     // Setup sprites
     sBackground.setTexture(bgTexture);
     sBackground.scale(2, 2);
@@ -31,7 +51,7 @@ Game::Game(float windowWidth, float windowHeight)
         Car car;
         car.x = 300 + i * 50;
         car.y = 1700 + i * 80;
-        car.speed = 7 + i;
+        car.speed = 5 + i;
         cars.push_back(car);
     }
 
@@ -50,20 +70,46 @@ void Game::run() {
             }
         }
 
+        checkOilSpillCollision(cars[0].x, cars[0].y);  // Pass player's car position
         handleCarMovement();
         updateBoostVisuals();
         checkCollisions();
         render();
     }
 }
+// Function to check if the car is within the track's boundaries
+bool Game::isOnTrack(float x, float y) {
+    for (const auto& rect : trackBounds) {
+        if (rect.contains(x, y)) {
+            return true; // Car is on the track
+        }
+    }
+    return false; // Car is off the track
+}
+void Game::checkOilSpillCollision(float x, float y) {
+    for (const auto& rect : oilSpillBounds) {
+        if (rect.contains(x, y)) {
+            std::cout << "Collision detected at: (" << x << ", " << y << ")" << std::endl;
+            oilSpillSound.play(); // This will play the oil spill sound
+            // Start the spinning effect if it's not already spinning
+            if (!isSpinning) {
+                isSpinning = true;
+                oilSpinClock.restart();  // Restart the clock when the collision happens
+                cars[0].speed *= 0.5f;  // Reduce speed to simulate slip
+            }
 
+            return; // Only process one spill at a time
+        }
+    }
+
+    std::cout << "No collision detected for position: (" << x << ", " << y << ")" << std::endl;
+}
 void Game::handleCarMovement() {
     bool Up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     bool Down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
     bool Left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
     bool Right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     bool Boost = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
     // Handle speed boost
     if (Boost && boostAvailable) {
         activateBoost();
@@ -76,26 +122,81 @@ void Game::handleCarMovement() {
     // Update speed with boost multiplier
     float effectiveMaxSpeed = isBoosting ? maxSpeed * boostMultiplier : maxSpeed;
 
-    // Update speed
-    if (Up && speed < maxSpeed)
-        speed += (speed < 0) ? deceleration : acc;
-    if (Down && speed > -maxSpeed)
-        speed -= (speed > 0) ? deceleration : acc;
-    if (!Up && !Down)
-        speed += (speed > 0) ? -deceleration : (speed < 0) ? deceleration : 0;
+    // Calculate new position based on speed and angle
+    float newX = cars[0].x + cos(angle * 3.14159 / 180.0f) * speed;
+    float newY = cars[0].y + sin(angle * 3.14159 / 180.0f) * speed;
+    if (isSpinning) {
+        // Check if 3 seconds have passed
+        if (oilSpinClock.getElapsedTime().asSeconds() >= 1.0f) {
+            isSpinning = false;  // Stop spinning after 3 seconds
+        } else {
+            // Apply continuous spinning during the 3 seconds
+            angle += 50;  // Adjust the speed of the spin
+        }
+    }
+    // Check if the car will be within the track boundaries before updating its position
+    if (isOnTrack(newX, newY)) {
+        // Reset speed to maxSpeed when on track
+        // Update speed
+        if (Up && speed < maxSpeed)
+            speed += (speed < 0) ? deceleration : acc;
+        if (Down && speed > -maxSpeed)
+            speed -= (speed > 0) ? deceleration : acc;
+        if (!Up && !Down)
+            speed += (speed > 0) ? -deceleration : (speed < 0) ? deceleration : 0;
 
-    // Update angle
-    if (Right && speed != 0)
-        angle += turnSpeed * speed / maxSpeed;
-    if (Left && speed != 0)
-        angle -= turnSpeed * speed / maxSpeed;
+        // Update angle
+        if (Right && speed != 0)
+            angle += turnSpeed * speed / maxSpeed;
+        if (Left && speed != 0)
+            angle -= turnSpeed * speed / maxSpeed;
 
-    cars[0].speed = speed;
-    cars[0].angle = angle;
+        cars[0].speed = speed;
+        cars[0].angle = angle;
+        isOutOfBounds = false; // Car is on track, so reset this flag
+    } else {
+        if (!isOutOfBounds) {
+            // Restart the clock when the car first goes out of bounds
+            outOfBoundsClock.restart();
+        }
+        isOutOfBounds = true; // Mark the car as out of bounds
 
-    for (auto& car : cars) car.move();
-    for (size_t i = 1; i < cars.size(); ++i) cars[i].findTarget();
+        // Apply deceleration after 0.1 seconds if out of bounds
+        if (outOfBoundsClock.getElapsedTime().asSeconds() >= 0.1f) {
+            if (speed > 0) 
+                speed -= 0.2f;  // Decelerate the car when moving forward
+            else if (speed < 0) 
+                speed += 0.2f;  // Decelerate the car when moving backward
+        }
+
+        // Apply slight acceleration/deceleration when keys are pressed
+        if (Up && speed < 5.0f)
+            speed += (speed < 0) ? deceleration : 0.3f;
+        if (Down && speed > -5.0f)
+            speed -= (speed > 0) ? deceleration : 0.3f;
+        if (!Up && !Down)
+            speed += (speed > 0) ? -deceleration : (speed < 0) ? deceleration : 0;
+
+        // Update angle
+        if (Right && speed != 0)
+            angle += turnSpeed * speed / maxSpeed;
+        if (Left && speed != 0)
+            angle -= turnSpeed * speed / maxSpeed;
+
+        cars[0].speed = speed;
+        cars[0].angle = angle;
+    }
+
+    // Move the player's car with boundary checks
+    cars[0].moveWithBoundaries();
+
+    // Update AI cars (move and follow their target)
+    for (size_t i = 1; i < cars.size(); ++i) {
+        cars[i].move();  // Move AI cars without boundary checks
+        cars[i].findTarget();  // Make AI cars follow their waypoints
+    }
 }
+
 
 void Game::checkCollisions() {
     for (size_t i = 0; i < cars.size(); ++i) {
@@ -117,15 +218,18 @@ void Game::checkCollisions() {
 }
 
 void Game::render() {
+    // Adjust offsets to stay within map boundaries
+    if (cars[0].x > 320) 
+        offsetX = std::min(cars[0].x - 320.0f, static_cast<float>(MAP_MAX_X - gameWindow.getSize().x));
+    if (cars[0].y > 240) 
+        offsetY = std::min(cars[0].y - 240.0f, static_cast<float>(MAP_MAX_Y - gameWindow.getSize().y));
+
     gameWindow.clear(sf::Color::White);
 
-    // Adjust camera offset
-    if (cars[0].x > 320) offsetX = cars[0].x - 320;
-    if (cars[0].y > 240) offsetY = cars[0].y - 240;
-
-    // Draw background
+    // Set the background position with adjusted offset
     sBackground.setPosition(-offsetX, -offsetY);
     gameWindow.draw(sBackground);
+    
 
     // Draw cars
     sf::Color colors[5] = {sf::Color::Red, sf::Color::Green, sf::Color::Magenta, sf::Color::Blue, sf::Color::White};
@@ -135,12 +239,16 @@ void Game::render() {
         sCar.setColor(colors[i]);
         gameWindow.draw(sCar);
     }
-
     // Draw boost slider and icon
     gameWindow.draw(boostSlider);
     gameWindow.draw(boostIcon);
-
+    // Draw "Out of Bound" message if applicable
+    if (isOutOfBounds) {
+        gameWindow.draw(outOfBoundText);
+    }
+    gameWindow.draw(coordinatesText); // Draw the text in the game window
     gameWindow.display();
+
 }
 
 void Game::activateBoost() {
