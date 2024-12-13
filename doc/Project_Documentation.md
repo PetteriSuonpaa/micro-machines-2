@@ -1,12 +1,12 @@
 1. **Overview**: the software is able to successfully operate like the original micromachine game including its movement dynamics, bots, oil spills, boost speed and boundaries. The software doesn’t provide splitscreen, a level editor and weapons.  
 2. **Software structure**:   
    This is what our structure is composed of (along with the SFML library):  
-   ![Architecture image][./Architecture.png]  
+   ![Architecture image](./Architecture.png) 
    
 
 As for the relationships between the architecture, you can see it in this diagram:
 
-![Diagram image][./Diagram.png]
+![Diagram image](./Diagram.png)
 
 3. **Instructions for building and using the software:**   
 - **Make sure you have SFML installed (but should be provided in the file already)**  
