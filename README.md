@@ -91,13 +91,5 @@ These contributions were crucial to making the game fully playable and faithful 
 ---
 ## ⚡ Overview
 
-This project was developed collaboratively, but Petteri contributed significantly to:
-
-- Main menu design and implementation
-
-- Boundaries implementation
-
-- Oil spill mechanics
-
 The game successfully replicates the core mechanics of the original Micro Machines game, and it is fully playable on Linux with SFML.
 
